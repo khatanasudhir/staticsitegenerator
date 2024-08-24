@@ -1,33 +1,54 @@
-# test_htmlnode.py
-
 import unittest
 from htmlnode import HTMLNode
 
+
 class TestHTMLNode(unittest.TestCase):
+    def test_to_html_props(self):
+        node = HTMLNode(
+            "div",
+            "Hello, world!",
+            None,
+            {"class": "greeting", "href": "https://boot.dev"},
+        )
+        self.assertEqual(
+            node.props_to_html(),
+            ' class="greeting" href="https://boot.dev"',
+        )
 
-    def test_props_to_html_with_props(self):
-        # Test with props
-        node = HTMLNode(tag="a", props={"href": "https://www.google.com", "target": "_blank"})
-        expected_props = ' href="https://www.google.com" target="_blank"'
-        self.assertEqual(node.props_to_html(), expected_props)
+    def test_values(self):
+        node = HTMLNode(
+            "div",
+            "I wish I could read",
+        )
+        self.assertEqual(
+            node.tag,
+            "div",
+        )
+        self.assertEqual(
+            node.value,
+            "I wish I could read",
+        )
+        self.assertEqual(
+            node.children,
+            None,
+        )
+        self.assertEqual(
+            node.props,
+            None,
+        )
 
-    def test_props_to_html_without_props(self):
-        # Test without props (should return an empty string)
-        node = HTMLNode(tag="p", value="Some text")
-        expected_props = ""
-        self.assertEqual(node.props_to_html(), expected_props)
+    def test_repr(self):
+        node = HTMLNode(
+            "p",
+            "What a strange world",
+            None,
+            {"class": "primary"},
+        )
+        self.assertEqual(
+            node.__repr__(),
+            "HTMLNode(p, What a strange world, children: None, {'class': 'primary'})",
+        )
 
-    def test_props_to_html_with_empty_props(self):
-        # Test with empty props dictionary
-        node = HTMLNode(tag="div", props={})
-        expected_props = ""
-        self.assertEqual(node.props_to_html(), expected_props)
-
-    def test_repr_method(self):
-        # Test __repr__ method
-        node = HTMLNode(tag="a", value="Click here", props={"href": "https://www.google.com"})
-        expected_repr = "HTMLNode(tag='a', value='Click here', children=[], props={'href': 'https://www.google.com'})"
-        self.assertEqual(repr(node), expected_repr)
 
 if __name__ == "__main__":
     unittest.main()
